@@ -1,0 +1,27 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    image: necobm/wordpress-woocommerce
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: wpdb_user
+      WORDPRESS_DB_PASSWORD: wpdb_password
+      WORDPRESS_DB_NAME: wordpressdb
+    volumes:
+      - ./wordpress:/var/www/html:cached,z      
+
+  db:
+    image: mysql:5.7    
+    command: "--character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --default-authentication-plugin=mysql_native_password --sql_mode=\"\""
+    environment:
+      MYSQL_DATABASE: wordpressdb
+      MYSQL_USER: wpdb_user
+      MYSQL_PASSWORD: wpdb_password
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./db:/var/lib/mysql
